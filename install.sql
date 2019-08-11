@@ -1,0 +1,11 @@
+set serveroutput on;
+set define off;
+@DDL.sql
+@XX_UPLOAD_API_EXECUTOR.sql 
+@XX_UPLOAD_STEAL_EXECUTOR.sql 
+@XX_UPLOAD_SERVICE.sql 
+
+@XX_UPLOAD_SERVICE_TEST.sql 
+@XX_UPLOAD_TEST_REPORT.sql
+
+@DUPLICATE_FILTER.sql
