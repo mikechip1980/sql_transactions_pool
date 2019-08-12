@@ -1,3 +1,5 @@
+set define off;
+
 CREATE OR REPLACE PACKAGE APPS.XX_UPLOAD_TEST_REPORT AS
     procedure generate_report;
 END;
@@ -15,28 +17,29 @@ CREATE OR REPLACE PACKAGE body APPS.XX_UPLOAD_TEST_REPORT AS
 	  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	  	  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
           <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous"/>
-		<title>Отчет о тестировании пула</title>
+		<title>Pool processing test report</title>
 	</head>
 	<body>
-	<h1>Отчет о тестировании работы пула под нагрузкой</h1>
-	<p>Количество паралельных потоков: 10</p>
-	<p>Задержка-имитация вызова стандартного АПИ: 0,05сек </p>
-	<p>Время выполнения теста -  <xsl:value-of select="DATES/DATES_ROW/START_DATE"/> -  <xsl:value-of select="DATES/DATES_ROW/END_DATE"/></p>
-	<p>Сумма значений всех полей amount, поступивших в пул:  <xsl:value-of select="TRX_AMOUNT_SUM"/>	</p>
-	<p>Сумма значений всех полей amount, загруженных в стандартную таблицу: <xsl:value-of select="POOL_AMOUNT"/></p>
-	<i>*Суммы должны быть равны. Это показывает, что ни одно сообщение не утеряно и не задвоено</i>
-	<h2>Результаты</h2>
+	<h1>Pool processing test report</h1>
+	<p>Parallel sessions count: 10</p>
+	<p>Standard API imitation sleep time: 0,05СЃРµРє </p>
+	<p>Test execution time -  <xsl:value-of select="DATES/DATES_ROW/START_DATE"/> -  <xsl:value-of select="DATES/DATES_ROW/END_DATE"/></p>
+	<p>Sum of Amount field of the data inserted to the pool:  <xsl:value-of select="TRX_AMOUNT_SUM"/>	</p>
+	<p>Sum of Amount field in the Standard imitation table: <xsl:value-of select="POOL_AMOUNT"/></p>
+	<i>*Sum must be equal. It means that there are no messages lost and processed twice</i>
+	<h2>Results</h2>
 	<p>
-	<i>*Значение сообщений в секунду должно быть около 200 и чуть ниже. 200 это максимально возможное значение, 
-	так как имитация вызова стандартного АПИ останавливает сессию на 0.05 сек (dbms_lock.sleep), 
-	это 20 сообщений в секунду для одной сессии и 200 для 10 сессий. Например 190 значит что 10 сессий потратили на считывание пула менее 0,5% времени от выполнения АПИ</i>
-	</p><p>	<i>*Цифры в количестве сообщений в пуле круглые, так как массив сообщений считывается по 100</i></p>
+	<i>*Count of the processed messages will be about 200.  200 is maximum possible amount, 
+	 because of the sleep time of the Standard API immitation (dbms_lock.sleep 0.05 sec).
+	This is 20 messages per sec for one session and 200 for 10 sessions. 
+	For example, 190 means that 10 sessions spent 0,5% of time for reading the message from the pool</i>
+	</p><p>	<i>*Digits in the Pool count column are multiple 100 due to  fetch collect array size</i></p>
 	<canvas id="myChart" width="300" height="200"></canvas>
     <table class="pure-table pure-table-bordered">
 	 <tr>
-		<th>Время и дата</th>
-		<th>Количество обработанных сообщений в секунду</th>
-		<th>Количество сообщений в пуле, мониторинг каждые 5 сек</th>
+		<th>Date and Time</th>
+		<th>Count of processed messages per second</th>
+		<th>Count of rows in the pool, logged every 5 sec</th>
 	   </tr>
 	   <xsl:for-each select="RESULTS/RESULTS_ROW">
 	   <tr> 
@@ -65,7 +68,7 @@ var myChart = new Chart(ctx, {
     labels: dates,
     datasets: [
       { 
-      	label:"Количество обработанных транзакций в секунду",
+      	label:"Count of processed messages per second",
         data: cnt_per_sec
       }
     ]
