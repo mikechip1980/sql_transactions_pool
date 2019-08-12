@@ -1,0 +1,1148 @@
+
+
+<html xmlns:xdb="http://xmlns.oracle.com/xdb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  </meta>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js">
+  </script>
+  <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
+  </link>
+  <title>Отчет о тестировании пула</title>
+ </head>
+ <body>
+  <h1>Отчет о тестировании работы пула под нагрузкой</h1>
+
+  <p>Количество паралельных потоков: 10</p>
+  <p>Задержка-имитация вызова стандартного АПИ: 0,05сек </p>
+  <p>Время выполнения теста -  12.08.2019 12:07:43 -  12.08.2019 12:11:00</p>
+  <p>Сумма значений всех полей amount, поступивших в пул:  2535195000</p>
+  <p>Сумма значений всех полей amount, загруженных в стандартную таблицу: 2535195000</p>
+  <i>*Суммы должны быть равны. Это показывает, что ни одно сообщение не утеряно и не задвоено</i>
+  <h2>Результаты</h2>
+  <p>
+   <i>*Значение сообщений в секунду должно быть около 200 и чуть ниже. 200 это максимально возможное значение,
+	так как имитация вызова стандартного АПИ останавливает сессию на 0.05 сек (dbms_lock.sleep),
+	это 20 сообщений в секунду для одной сессии и 200 для 10 сессий. Например 190 значит что 10 сессий потратили на считывание пула менее 0,5% времени от выполнения АПИ</i>
+  </p>
+  <p>
+
+   <i>*Цифры в количестве сообщений в пуле круглые, так как массив сообщений считывается по 100</i>
+  </p>
+  <canvas id="myChart" width="300" height="200">
+  </canvas>
+  <table class="pure-table pure-table-bordered">
+   <tr>
+    <th>Время и дата</th>
+    <th>Количество обработанных сообщений в секунду</th>
+    <th>Количество сообщений в пуле, мониторинг каждые 5 сек</th>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:11:00</td>
+    <td class="amt_per_sec">7</td>
+
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:59</td>
+    <td class="amt_per_sec">185</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:58</td>
+    <td class="amt_per_sec">198</td>
+    <td class="pool_lines">1000</td>
+   </tr>
+   <tr>
+
+    <td class="cr_date">12.08.2019 12:10:57</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:56</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:55</td>
+    <td class="amt_per_sec">196</td>
+    <td class="pool_lines"></td>
+
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:54</td>
+    <td class="amt_per_sec">195</td>
+    <td class="pool_lines">2000</td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:53</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:52</td>
+
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:51</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:50</td>
+    <td class="amt_per_sec">198</td>
+    <td class="pool_lines">2000</td>
+   </tr>
+
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:49</td>
+    <td class="amt_per_sec">193</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:48</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:47</td>
+    <td class="amt_per_sec">200</td>
+
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:46</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:45</td>
+    <td class="amt_per_sec">198</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+
+    <td class="cr_date">12.08.2019 12:10:44</td>
+    <td class="amt_per_sec">196</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:43</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:42</td>
+    <td class="amt_per_sec">198</td>
+    <td class="pool_lines">4000</td>
+
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:41</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:40</td>
+    <td class="amt_per_sec">198</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:39</td>
+
+    <td class="amt_per_sec">195</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:38</td>
+    <td class="amt_per_sec">198</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:37</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines">5000</td>
+   </tr>
+
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:36</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:35</td>
+    <td class="amt_per_sec">199</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:34</td>
+    <td class="amt_per_sec">193</td>
+
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:33</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:32</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines">6000</td>
+   </tr>
+   <tr>
+
+    <td class="cr_date">12.08.2019 12:10:31</td>
+    <td class="amt_per_sec">199</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:30</td>
+    <td class="amt_per_sec">199</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:29</td>
+    <td class="amt_per_sec">192</td>
+    <td class="pool_lines"></td>
+
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:28</td>
+    <td class="amt_per_sec">198</td>
+    <td class="pool_lines">7000</td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:27</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:26</td>
+
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:25</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:24</td>
+    <td class="amt_per_sec">191</td>
+    <td class="pool_lines">8000</td>
+   </tr>
+
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:23</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:22</td>
+    <td class="amt_per_sec">199</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:21</td>
+    <td class="amt_per_sec">200</td>
+
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:20</td>
+    <td class="amt_per_sec">199</td>
+    <td class="pool_lines">8000</td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:19</td>
+    <td class="amt_per_sec">192</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+
+    <td class="cr_date">12.08.2019 12:10:18</td>
+    <td class="amt_per_sec">199</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:17</td>
+    <td class="amt_per_sec">198</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:16</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:15</td>
+    <td class="amt_per_sec">199</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:14</td>
+    <td class="amt_per_sec">195</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:13</td>
+
+    <td class="amt_per_sec">196</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:12</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines">10000</td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:11</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:10</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:09</td>
+    <td class="amt_per_sec">192</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:08</td>
+    <td class="amt_per_sec">199</td>
+
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:07</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines">11000</td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:06</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+
+    <td class="cr_date">12.08.2019 12:10:05</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:04</td>
+    <td class="amt_per_sec">190</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:03</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:02</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines">12000</td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:01</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:10:00</td>
+
+    <td class="amt_per_sec">199</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:59</td>
+    <td class="amt_per_sec">190</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:58</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines">13000</td>
+   </tr>
+
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:57</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:56</td>
+    <td class="amt_per_sec">199</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:55</td>
+    <td class="amt_per_sec">200</td>
+
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:54</td>
+    <td class="amt_per_sec">193</td>
+    <td class="pool_lines">13900</td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:53</td>
+    <td class="amt_per_sec">199</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+
+    <td class="cr_date">12.08.2019 12:09:52</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:51</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:50</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines">14000</td>
+
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:49</td>
+    <td class="amt_per_sec">192</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:48</td>
+    <td class="amt_per_sec">199</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:47</td>
+
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:46</td>
+    <td class="amt_per_sec">197</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:45</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:44</td>
+    <td class="amt_per_sec">187</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:43</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:42</td>
+    <td class="amt_per_sec">200</td>
+
+    <td class="pool_lines">16000</td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:41</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:40</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+
+    <td class="cr_date">12.08.2019 12:09:39</td>
+    <td class="amt_per_sec">191</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:38</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:37</td>
+    <td class="amt_per_sec">199</td>
+    <td class="pool_lines">17000</td>
+
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:36</td>
+    <td class="amt_per_sec">199</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:35</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:34</td>
+
+    <td class="amt_per_sec">193</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:33</td>
+    <td class="amt_per_sec">199</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:32</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines">18000</td>
+   </tr>
+
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:31</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:30</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:29</td>
+    <td class="amt_per_sec">191</td>
+
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:28</td>
+    <td class="amt_per_sec">199</td>
+    <td class="pool_lines">19000</td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:27</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+
+    <td class="cr_date">12.08.2019 12:09:26</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:25</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:24</td>
+    <td class="amt_per_sec">195</td>
+    <td class="pool_lines">19000</td>
+
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:23</td>
+    <td class="amt_per_sec">199</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:22</td>
+    <td class="amt_per_sec">199</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:21</td>
+
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:20</td>
+    <td class="amt_per_sec">199</td>
+    <td class="pool_lines">20000</td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:19</td>
+    <td class="amt_per_sec">196</td>
+    <td class="pool_lines"></td>
+   </tr>
+
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:18</td>
+    <td class="amt_per_sec">197</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:17</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:16</td>
+    <td class="amt_per_sec">200</td>
+
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:15</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:14</td>
+    <td class="amt_per_sec">198</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+
+    <td class="cr_date">12.08.2019 12:09:13</td>
+    <td class="amt_per_sec">194</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:12</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines">22000</td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:11</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:10</td>
+    <td class="amt_per_sec">199</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:09</td>
+    <td class="amt_per_sec">199</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:08</td>
+
+    <td class="amt_per_sec">195</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:07</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines">23000</td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:06</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:05</td>
+    <td class="amt_per_sec">199</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:04</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:03</td>
+    <td class="amt_per_sec">193</td>
+
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:02</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines">24000</td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:09:01</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+
+    <td class="cr_date">12.08.2019 12:09:00</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:59</td>
+    <td class="amt_per_sec">198</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:58</td>
+    <td class="amt_per_sec">196</td>
+    <td class="pool_lines">25000</td>
+
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:57</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:56</td>
+    <td class="amt_per_sec">199</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:55</td>
+
+    <td class="amt_per_sec">199</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:54</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines">25000</td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:53</td>
+    <td class="amt_per_sec">193</td>
+    <td class="pool_lines"></td>
+   </tr>
+
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:52</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:51</td>
+    <td class="amt_per_sec">199</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:50</td>
+    <td class="amt_per_sec">200</td>
+
+    <td class="pool_lines">26000</td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:49</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:48</td>
+    <td class="amt_per_sec">192</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+
+    <td class="cr_date">12.08.2019 12:08:47</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:46</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:45</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:44</td>
+    <td class="amt_per_sec">199</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:43</td>
+    <td class="amt_per_sec">196</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:42</td>
+
+    <td class="amt_per_sec">199</td>
+    <td class="pool_lines">15000</td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:41</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:40</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:39</td>
+    <td class="amt_per_sec">199</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:38</td>
+    <td class="amt_per_sec">193</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:37</td>
+    <td class="amt_per_sec">198</td>
+
+    <td class="pool_lines">16000</td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:36</td>
+    <td class="amt_per_sec">199</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:35</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+
+    <td class="cr_date">12.08.2019 12:08:34</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:33</td>
+    <td class="amt_per_sec">188</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:32</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines">17000</td>
+
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:31</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:30</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:29</td>
+
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:28</td>
+    <td class="amt_per_sec">193</td>
+    <td class="pool_lines">18000</td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:27</td>
+    <td class="amt_per_sec">198</td>
+    <td class="pool_lines"></td>
+   </tr>
+
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:26</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:25</td>
+    <td class="amt_per_sec">198</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:24</td>
+    <td class="amt_per_sec">200</td>
+
+    <td class="pool_lines">18000</td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:23</td>
+    <td class="amt_per_sec">193</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:22</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+
+    <td class="cr_date">12.08.2019 12:08:21</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:20</td>
+    <td class="amt_per_sec">197</td>
+    <td class="pool_lines">19000</td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:19</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:18</td>
+    <td class="amt_per_sec">192</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:17</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:16</td>
+
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:15</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines">20000</td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:14</td>
+    <td class="amt_per_sec">198</td>
+    <td class="pool_lines"></td>
+   </tr>
+
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:13</td>
+    <td class="amt_per_sec">194</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:12</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:11</td>
+    <td class="amt_per_sec">199</td>
+
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:10</td>
+    <td class="amt_per_sec">199</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:09</td>
+    <td class="amt_per_sec">199</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+
+    <td class="cr_date">12.08.2019 12:08:08</td>
+    <td class="amt_per_sec">187</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:07</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines">22000</td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:06</td>
+    <td class="amt_per_sec">199</td>
+    <td class="pool_lines"></td>
+
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:05</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:04</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:03</td>
+
+    <td class="amt_per_sec">194</td>
+    <td class="pool_lines">22000</td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:02</td>
+    <td class="amt_per_sec">199</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:01</td>
+    <td class="amt_per_sec">199</td>
+    <td class="pool_lines"></td>
+   </tr>
+
+   <tr>
+    <td class="cr_date">12.08.2019 12:08:00</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:07:59</td>
+    <td class="amt_per_sec">198</td>
+    <td class="pool_lines">23000</td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:07:58</td>
+    <td class="amt_per_sec">195</td>
+
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:07:57</td>
+    <td class="amt_per_sec">199</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:07:56</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+
+    <td class="cr_date">12.08.2019 12:07:55</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines">24000</td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:07:54</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:07:53</td>
+    <td class="amt_per_sec">191</td>
+    <td class="pool_lines"></td>
+
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:07:52</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:07:51</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:07:50</td>
+
+    <td class="amt_per_sec">197</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:07:49</td>
+    <td class="amt_per_sec">199</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:07:48</td>
+    <td class="amt_per_sec">189</td>
+    <td class="pool_lines"></td>
+   </tr>
+
+   <tr>
+    <td class="cr_date">12.08.2019 12:07:47</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines">26000</td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:07:46</td>
+    <td class="amt_per_sec">200</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:07:45</td>
+    <td class="amt_per_sec">200</td>
+
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:07:44</td>
+    <td class="amt_per_sec">198</td>
+    <td class="pool_lines"></td>
+   </tr>
+   <tr>
+    <td class="cr_date">12.08.2019 12:07:43</td>
+    <td class="amt_per_sec">177</td>
+    <td class="pool_lines">13000</td>
+   </tr>
+  </table>
+
+ </body>
+ <script>
+	  var ctx = document.getElementById("myChart");
+  function getValues(class_name) {
+	  var d_list=document.querySelectorAll(class_name);
+	  var data=[];
+	  for (i = 0;i!=d_list.length; ++i) {
+	  data[i]=d_list[i].textContent;
+	}
+	return data;
+  }
+	var dates=getValues(".cr_date");
+	var cnt_per_sec=getValues(".amt_per_sec");
+
+var myChart = new Chart(ctx, {
+  type: "line",
+  data: {
+    labels: dates,
+    datasets: [
+      {
+      	label:"Количество обработанных транзакций в секунду",
+        data: cnt_per_sec
+      }
+    ]
+  },
+    options: {
+    responsive: true,
+
+    maintainAspectRatio: false,
+    scales: {
+        yAxes: [{
+            ticks: {
+                beginAtZero:true
+            }
+        }]
+    }
+    }
+});
+ </script>
+</html>
+

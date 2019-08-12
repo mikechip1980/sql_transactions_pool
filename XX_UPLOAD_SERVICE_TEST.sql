@@ -33,8 +33,8 @@ create or replace package body apps.xx_upload_service_test as
     l_start_date date:=sysdate;
     begin
         select value into l_job_cnt from v$parameter where name='job_queue_processes';
-        if l_job_cnt<11 then
-           raise_application_error(-20001,'job_queue_processes has value less then 11, increase it please');
+        if l_job_cnt<12 then
+           raise_application_error(-20001,'job_queue_processes has value less then 12, increase it please');
         end if;
         DBMS_SCHEDULER.CREATE_JOB (
            job_name           =>  'xx_producer',
@@ -57,8 +57,8 @@ procedure submit_monitor_job(p_test_code varchar2,p_minutes_count number)is
     l_interval pls_integer:=5; --интервал 5 сек
     begin
         select value into l_job_cnt from v$parameter where name='job_queue_processes';
-        if l_job_cnt<13 then
-           raise_application_error(-20001,'job_queue_processes has value less then 13, increase it please');
+        if l_job_cnt<12 then
+           raise_application_error(-20001,'job_queue_processes has value less then 12, increase it please');
         end if;
         DBMS_SCHEDULER.CREATE_JOB (
            job_name           =>  'xx_monitor',

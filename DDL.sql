@@ -1,4 +1,5 @@
-WHENEVER SQLERROR CONTINUE; --чтобы продолжать выполнение, если таблица существует
+WHENEVER SQLERROR CONTINUE; 
+--чтобы продолжать выполнение, если таблица существует
 --drop table  apps.xx_t_import
 
 --это таблица пула

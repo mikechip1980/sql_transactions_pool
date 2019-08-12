@@ -8,10 +8,15 @@ spool t1_test_report.html;
  SET TERMOUT OFF
  SET FEED OFF
  SET HEADING OFF
-
+ SET VERIFY ON 
+ SET TRIMOUT OFF
+SET TAB ON
 begin
 XX_UPLOAD_TEST_REPORT.generate_report;
 end;
-
+/
 select report_html from xx_upload_test_results
 where test_code='t1';
+ SET TERMOUT ON
+ SET FEED ON
+ spool off

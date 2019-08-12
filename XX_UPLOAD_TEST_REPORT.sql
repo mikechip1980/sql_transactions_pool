@@ -24,16 +24,22 @@ CREATE OR REPLACE PACKAGE body APPS.XX_UPLOAD_TEST_REPORT AS
 	<p>Время выполнения теста -  <xsl:value-of select="DATES/DATES_ROW/START_DATE"/> -  <xsl:value-of select="DATES/DATES_ROW/END_DATE"/></p>
 	<p>Сумма значений всех полей amount, поступивших в пул:  <xsl:value-of select="TRX_AMOUNT_SUM"/>	</p>
 	<p>Сумма значений всех полей amount, загруженных в стандартную таблицу: <xsl:value-of select="POOL_AMOUNT"/></p>
+	<i>*Суммы должны быть равны. Это показывает, что ни одно сообщение не утеряно и не задвоено</i>
 	<h2>Результаты</h2>
+	<p>
+	<i>*Значение сообщений в секунду должно быть около 200 и чуть ниже. 200 это максимально возможное значение, 
+	так как имитация вызова стандартного АПИ останавливает сессию на 0.05 сек (dbms_lock.sleep), 
+	это 20 сообщений в секунду для одной сессии и 200 для 10 сессий. Например 190 значит что 10 сессий потратили на считывание пула менее 0,5% времени от выполнения АПИ</i>
+	</p><p>	<i>*Цифры в количестве сообщений в пуле круглые, так как массив сообщений считывается по 100</i></p>
 	<canvas id="myChart" width="300" height="200"></canvas>
     <table class="pure-table pure-table-bordered">
 	 <tr>
 		<th>Время и дата</th>
 		<th>Количество обработанных сообщений в секунду</th>
-		<th>Количество сообщений в пуле</th>
+		<th>Количество сообщений в пуле, мониторинг каждые 5 сек</th>
 	   </tr>
 	   <xsl:for-each select="RESULTS/RESULTS_ROW">
-	   <tr>
+	   <tr> 
 		<td class="cr_date"> <xsl:value-of select="CREATION_DATE"/></td>
 		<td class="amt_per_sec"> <xsl:value-of select="CNT_PER_SEC"/></td>
 		<td class="pool_lines"> <xsl:value-of select="POOL_LINES_COUNT"/></td>
@@ -59,7 +65,7 @@ var myChart = new Chart(ctx, {
     labels: dates,
     datasets: [
       { 
-      	label:"Количество транзакций в секунду",
+      	label:"Количество обработанных транзакций в секунду",
         data: cnt_per_sec
       }
     ]
@@ -129,6 +135,7 @@ var myChart = new Chart(ctx, {
          where test_code='t1';
        
     --    l_output:= DBMS_XMLGEN.GETXML(l_cursor)
+        commit;
     end;
 END;
 /

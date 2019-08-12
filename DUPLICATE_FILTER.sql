@@ -1,4 +1,4 @@
-prompt "создание фильтра дл€ подавлени€ дубликатов"
+prompt "Duplicates filter creation"
 create or replace view apps.XX_T_IMPORT_FILTER_V 
 as 
 select * from apps.XX_T_IMPORT
