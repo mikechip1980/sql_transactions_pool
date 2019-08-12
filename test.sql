@@ -14,12 +14,10 @@ begin
 xx_upload_service_test.init_test('t1');
 end;
 /
-
-
 prompt "Pool population jobs start"
 begin
 xx_upload_service_test.fill_pool_simple('t1');
-xx_upload_service_test.submit_producer_job('t1',to_number('&l_iterations')); 
+xx_upload_service_test.submit_producer_job('t1',to_number('&&l_iterations')); 
 end;
 /
 
@@ -31,7 +29,7 @@ end;
 
 prompt "Monitor process start"
 begin
-    XX_UPLOAD_SERVICE_TEST.submit_monitor_job('t1',to_number('&l_iterations')+2); -- монитор с запасом
+    XX_UPLOAD_SERVICE_TEST.submit_monitor_job('t1',to_number('&&l_iterations')+2); -- монитор с запасом
 end;
 /
 
